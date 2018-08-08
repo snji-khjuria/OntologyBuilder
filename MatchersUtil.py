@@ -47,7 +47,7 @@ def getAllRelations(leftPattern, middlePattern, rightPattern, pageContent):
             # print("startR is:- " + str(startR))
             # print("Key is " + str(key))
             # print("Value is " + str(value))
-            if len(key)<=100 and len(value)<=100 and notHtml(key, value):
+            if len(key)<=1000 and len(value)<=1000 and notHtml(key, value):
                 output.append((key, value))
         except ValueError:
             return list(set(output))

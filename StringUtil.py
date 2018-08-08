@@ -9,7 +9,12 @@ def replaceHtmlTags(str):
     return notAmp
 
 def replaceNumWordsInStr(s):
-    return re.sub("[ \"\'=:]\d+[ \"\']", " NUM ", s)
+    return re.sub("(<[\s\S]*?)[ \"\'=:]\d+[ \"\']([\s\S]*?>)", r"\1 NUM \2", s)
+
+
+# def replaceNumWordsInStr(s):
+#     return re.sub("(<[\s\S]*)[ \"\'=:]\d+[ \"\']([\s\S]*>)", r"\1 NUM \2", s)
+    # return re.sub("[ \"\'=:]\d+[ \"\']", " NUM ", s)
 
 def processNumInContext(corpusLevelContext):
     output = []
