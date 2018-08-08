@@ -1,20 +1,24 @@
 from FileUtil import readPlainHtmlPageContent
 
 from MatchersUtil import getAllEntitiesInsideLeftRightPattern, getAllRelations, getClusterInsideLeftRightPattern, getElementsOfCluster
-def extractProductTitle(pageContent, titlePattern):
-    (leftTitlePattern, rightTitlePattern) = titlePattern
+def extractProductTitle(pageContent, numPageContent, titlePattern):
+    (leftTitlePattern, rightTitlePattern, patternType) = titlePattern
+    if patternType == "NUM":
+        pageContent = numPageContent
     return getAllEntitiesInsideLeftRightPattern(pageContent, leftTitlePattern, rightTitlePattern)
 
 
-def extractProductTitles(pageContent, titlePatterns):
+def extractProductTitles(pageContent, numPageContent, titlePatterns):
     output = []
     for titlePattern in titlePatterns:
-        output.extend(extractProductTitle(pageContent, titlePattern))
+        output.extend(extractProductTitle(pageContent, numPageContent, titlePattern))
     return output
 
 
-def extractProductSpec(pageContent, productSpecsPattern):
-    (leftSpecsPattern, insideSpecsPattern, rightSpecsPattern) = productSpecsPattern
+def extractProductSpec(pageContent, numPageContent, productSpecsPattern):
+    (leftSpecsPattern, insideSpecsPattern, rightSpecsPattern, patternType) = productSpecsPattern
+    if patternType == "NUM":
+        pageContent = numPageContent
     found = getClusterInsideLeftRightPattern(pageContent, leftSpecsPattern, insideSpecsPattern, rightSpecsPattern)
     totalFound = []
     for cluster in found:
@@ -24,31 +28,35 @@ def extractProductSpec(pageContent, productSpecsPattern):
     return list(totalFound)
     # return getClusterInsideLeftRightPattern(pageContent, leftSpecsPattern, insideSpecsPattern, rightSpecsPattern)
 
-def extractProductSpecs(pageContent, productSpecsPatterns):
+def extractProductSpecs(pageContent, numPageContent, productSpecsPatterns):
     output = []
     for pattern in productSpecsPatterns:
-        output.extend(extractProductSpec(pageContent, pattern))
+        output.extend(extractProductSpec(pageContent, numPageContent, pattern))
     return output
 
 
-def extractProductRelation(pageContent, productRelationPattern):
-    (leftTablePattern, middleTablePattern, rightTablePattern) = productRelationPattern
+def extractProductRelation(pageContent, numPageContent, productRelationPattern):
+    (leftTablePattern, middleTablePattern, rightTablePattern, patternType) = productRelationPattern
+    if patternType=="NUM":
+        pageContent = numPageContent
     found = getAllRelations(leftTablePattern, middleTablePattern, rightTablePattern, pageContent)
     return found
 
-def extractProductRelations(pageContent, productRelationPatterns):
+def extractProductRelations(pageContent, numPageContent, productRelationPatterns):
     output = []
     for pattern in productRelationPatterns:
-        output.extend(extractProductRelation(pageContent, pattern))
+        output.extend(extractProductRelation(pageContent, numPageContent, pattern))
     return output
 
+from StringUtil import replaceNumWordsInStr
 from ProductInfo import ProductInfo
 def getProdInfo(patterns, pageLocation):
     pageContent        = readPlainHtmlPageContent(pageLocation)
+    numProcessedPageContent = replaceNumWordsInStr(pageContent)
     titlePatterns      = patterns.getProductTitlePatterns()
     specsPatterns      = patterns.getProductSpecsPatterns()
     relationPatterns   = patterns.getProductRelationPatterns()
-    productTitles      = extractProductTitles(pageContent, titlePatterns)
-    productSpecs       = extractProductSpecs(pageContent, specsPatterns)
-    productRelations   = extractProductRelations(pageContent, relationPatterns)
+    productTitles      = extractProductTitles(pageContent, numProcessedPageContent, titlePatterns)
+    productSpecs       = extractProductSpecs(pageContent, numProcessedPageContent, specsPatterns)
+    productRelations   = extractProductRelations(pageContent, numProcessedPageContent, relationPatterns)
     return ProductInfo(pageLocation, productTitles, productSpecs, productRelations)

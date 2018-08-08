@@ -4,7 +4,7 @@ def readProductTitlePatterns(titlePatternLocation):
     file = open(titlePatternLocation, "r")
     reader = csv.reader(file, delimiter="\t")
     for line in reader:
-        output.append((line[0], line[1]))
+        output.append((line[0], line[1], line[2]))
 
     return output[1:]
 
@@ -14,7 +14,7 @@ def readProductSpecsPatterns(specsPatternLocation):
     output = []
     reader = csv.reader(file, delimiter="\t")
     for line in reader:
-        output.append((line[0], line[1], line[2]))
+        output.append((line[0], line[1], line[2], line[3]))
     return output[1:]
 
 
@@ -23,7 +23,7 @@ def readTablePatterns(tablePatterns):
     reader = csv.reader(file, delimiter="\t")
     output = []
     for line in reader:
-        output.append((line[0], line[1], line[2]))
+        output.append((line[0], line[1], line[2], line[3]))
     return output[1:]
 
 import Patterns

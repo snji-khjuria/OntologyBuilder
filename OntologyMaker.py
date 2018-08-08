@@ -115,14 +115,15 @@ def doTagging2(sentence, relations):
 
 
 coreNLPLocation       = "/home/sanjeevk/Desktop/NellKgExtraction/javaLib/stanford-corenlp-full-2017-06-09"
-from stanfordcorenlp import StanfordCoreNLP
-nlpEngine = StanfordCoreNLP(coreNLPLocation)
+# from stanfordcorenlp import StanfordCoreNLP
+# nlpEngine = StanfordCoreNLP(coreNLPLocation)
 def getWordsNLp(s):
-    words = nlpEngine.word_tokenize(s)
-    output = ""
-    for w in words:
-        output+=w+" "
-    return output.strip()
+    return s
+    # words = nlpEngine.word_tokenize(s)
+    # output = ""
+    # for w in words:
+    #     output+=w+" "
+    # return output.strip()
 
 
 
@@ -205,5 +206,5 @@ print("Untagged Para present at:-     "       + untaggedParaLocation)
 print("UnTagged Title present at:-    "       + untaggedTitleLocation)
 print("Tagged Para present at:-       "       + taggedParaLocation)
 print("Tagged Title present at:-      "       + taggedTitleLocation)
-nlpEngine.close()
+# nlpEngine.close()
 
